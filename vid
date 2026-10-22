@@ -1,0 +1,197 @@
+# VIDEO PRACTICAL 1 (P10): READ AND DISPLAY VIDEO
+
+import cv2
+
+video = cv2.VideoCapture("video.mp4")
+
+if not video.isOpened():
+    print("video not found")
+    exit()
+
+while True:
+    success, frame = video.read()
+
+    if not success:
+        break
+
+    cv2.imshow("Video", frame)
+
+    if cv2.waitKey(25) & 0xff == ord("q"):
+        break
+
+video.release()
+cv2.destroyAllWindows()
+
+
+# VIDEO PRACTICAL 2 (P11): VIDEO PROPERTIES
+
+import cv2
+
+video = cv2.VideoCapture("video.mp4")
+
+fps = video.get(cv2.CAP_PROP_FPS)
+frame_count = video.get(cv2.CAP_PROP_FRAME_COUNT)
+width = video.get(cv2.CAP_PROP_FRAME_WIDTH)
+height = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
+
+duration = frame_count / fps
+
+print("Frame rate:", fps)
+print("Total frames:", int(frame_count))
+print("Resolution:", int(width), "x", int(height))
+print("Duration:", round(duration, 2), "seconds")
+
+video.release()
+
+
+# VIDEO PRACTICAL 3 (P12): EXTRACT EVERY FRAME
+
+import cv2
+
+video = cv2.VideoCapture("video.mp4")
+count = 0
+
+while True:
+    success, frame = video.read()
+
+    if not success:
+        break
+
+    cv2.imwrite(f"frame{count}.jpg", frame)
+    count += 1
+
+video.release()
+print("Total frames:", count)
+
+
+# VIDEO PRACTICAL 4 (P13): EXTRACT ONE FRAME PER SECOND
+
+import cv2
+
+video = cv2.VideoCapture("video.mp4")
+fps = int(video.get(cv2.CAP_PROP_FPS))
+count = 0
+
+while True:
+    success, frame = video.read()
+
+    if not success:
+        break
+
+    if count % fps == 0:
+        cv2.imwrite(f"second{count//fps}.jpg", frame)
+
+    count += 1
+
+video.release()
+
+
+# VIDEO PRACTICAL 5 (P14): CONVERT VIDEO TO GRAYSCALE
+
+import cv2
+
+video = cv2.VideoCapture("video.mp4")
+
+while True:
+    success, frame = video.read()
+
+    if not success:
+        break
+
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    cv2.imshow("Gray Video", gray)
+
+    if cv2.waitKey(25) & 0xff == ord("q"):
+        break
+
+video.release()
+cv2.destroyAllWindows()
+
+
+# VIDEO PRACTICAL 15: CROP VIDEO
+
+import cv2
+
+video = cv2.VideoCapture("sample_video.mp4")
+
+if not video.isOpened():
+    print("Video not found")
+else:
+    while True:
+        success, frame = video.read()
+
+        if not success:
+            break
+
+        resized = cv2.resize(frame, (640, 360))
+        cropped = resized[80:280, 180:460]
+
+        cv2.imshow("Resized Video", resized)
+        cv2.imshow("Cropped Region", cropped)
+
+        if cv2.waitKey(25) & 0xFF == ord("q"):
+            break
+
+    video.release()
+    cv2.destroyAllWindows()
+
+
+# VIDEO PRACTICAL 16: SMOOTHING FILTERS
+
+import cv2
+
+video = cv2.VideoCapture("sample_video.mp4")
+
+if not video.isOpened():
+    print("Video not found")
+else:
+    while True:
+        success, frame = video.read()
+
+        if not success:
+            break
+
+        average = cv2.blur(frame, (5, 5))
+        gaussian = cv2.GaussianBlur(frame, (5, 5), 0)
+        median = cv2.medianBlur(frame, 5)
+
+        cv2.imshow("Original", frame)
+        cv2.imshow("Average Filter", average)
+        cv2.imshow("Gaussian Filter", gaussian)
+        cv2.imshow("Median Filter", median)
+
+        if cv2.waitKey(25) & 0xFF == ord("q"):
+            break
+
+    video.release()
+    cv2.destroyAllWindows()
+
+
+# VIDEO PRACTICAL 17: EDGE DETECTION
+
+import cv2
+
+video = cv2.VideoCapture("sample_video.mp4")
+
+if not video.isOpened():
+    print("Video not found")
+else:
+    while True:
+        success, frame = video.read()
+
+        if not success:
+            break
+
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+        edges = cv2.Canny(blurred, 50, 150)
+
+        cv2.imshow("Original Video", frame)
+        cv2.imshow("Edge Detection", edges)
+
+        if cv2.waitKey(25) & 0xFF == ord("q"):
+            break
+
+    video.release()
+    cv2.destroyAllWindows()
+
